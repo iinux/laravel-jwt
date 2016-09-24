@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    $.ajax({
+        url: "http://laravel.local/api/get_user_details",
+        dataType: "json",
+        type: "POST",
+        data: {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2xhcmF2ZWwubG9jYWxcL2FwaVwvbG9naW4iLCJpYXQiOjE0NzQ2OTEyNzEsImV4cCI6MTQ3NDY5NDg3MSwibmJmIjoxNDc0NjkxMjcxLCJqdGkiOiIwZDdjODU5NzI5OTA2OTU2MjBiNzJhZTgzOWM5ZTQ5YSJ9.6H6TeMdtcnvGIgeNqZoNdQy7OPVTaRPTxm32q33Fhks"},
+    success: function (data) {
+        alert(data.result)
+    }
+    // 这里我们用ajax请求测试，当然你也可以用Angular.js  Vue.js
+    });
+</script>
+</html>
