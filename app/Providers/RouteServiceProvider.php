@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
@@ -32,14 +32,14 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
     {
         $this->mapWebRoutes($router);
 
-        //
+        //$this->mapApiRoutes($router);
     }
 
     /**
@@ -47,15 +47,53 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapWebRoutes(Router $router)
     {
         $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
+            'namespace' => $this->namespace,
+            'middleware' => 'web',
         ], function ($router) {
             require app_path('Http/routes.php');
+        });
+    }
+
+    protected function mapWebRoutes2(Router $router)
+    {
+        $router->group([
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            require app_path('Http/webRoutes.php');
+
+            //开发环境下引入测试路由
+            $testRoutesPath = app_path('Http/testRoutes.php');
+            if ($this->app->isLocal() && file_exists($testRoutesPath)) {
+                require $testRoutesPath;
+            }
+
+            //开发环境下引入web页面开发者
+            if ($this->app->isLocal()) {
+                $this->mapBladeRoutes($router);
+            }
+        });
+    }
+
+
+    protected function mapBladeRoutes(Router $router)
+    {
+        $router->get('blade/{sec1?}/{sec2?}/{sec3?}/{sec4?}', 'BladeController@index');
+    }
+
+    public function mapApiRoutes(Router $router)
+    {
+        $router->group([
+            'namespace' => $this->namespace . '\API',
+            'domain'    => config('domain.web-api'),
+            'as'        => 'web-api::'
+        ], function ($router) {
+            require app_path('Http/apiRoutes.php');
         });
     }
 }
