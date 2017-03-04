@@ -18,7 +18,7 @@ class ApiController extends Controller
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         User::create($input);
-        return response()->json(['result'=>true]);
+        return response()->json(['result' => true]);
     }
 
     /*登陆*/
@@ -32,7 +32,7 @@ class ApiController extends Controller
     }
 
     /*获取用户信息*/
-    public function get_user_details(Request $request)
+    public function getUserDetails(Request $request)
     {
         $input = $request->all();
         $user = JWTAuth::toUser($input['token']);
